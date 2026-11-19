@@ -1,4 +1,4 @@
-/** Keep product identity while removing tracking queries and fragments. */
+/** Keep product identity and campaign parameters while removing tracking queries and fragments. */
 export function cleanProductUrl(input) {
   const value = input.trim().replace(/&amp;/g, '&');
   if (!value) return null;
@@ -12,11 +12,13 @@ export function cleanProductUrl(input) {
   const skuProperties = url.searchParams.get('sku_properties');
   if (!productId || !/^\d+$/.test(productId)) throw new Error('链接缺少有效的商品 id。短链接请先在浏览器打开，再复制详情页地址。');
   if (skuId && !/^\d+$/.test(skuId)) throw new Error('SKU 应为数字，请检查链接中的 skuId 或 sku_id。');
-  const removedCount = [...url.searchParams].filter(([key]) => !['id', 'skuId', 'sku_id', 'sku_properties'].includes(key)).length;
+  const campaigns = url.searchParams.getAll('xxc');
+  const removedCount = [...url.searchParams].filter(([key]) => !['id', 'skuId', 'sku_id', 'sku_properties', 'xxc'].includes(key)).length;
   url.search = '';
   url.hash = '';
   url.searchParams.set('id', productId);
   if (skuId) url.searchParams.set('skuId', skuId);
   else if (skuProperties) url.searchParams.set('sku_properties', skuProperties);
+  for (const campaign of campaigns) url.searchParams.append('xxc', campaign);
   return { url: url.href, productId, skuId, skuProperties, removedCount };
 }

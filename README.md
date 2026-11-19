@@ -17,4 +17,4 @@ npm run build
 
 仓库已包含 `.github/workflows/deploy.yml`，推送到 `main` 后自动测试、构建与发布。仓库 Settings → Pages → Source 选择 GitHub Actions。免费个人账号使用公开仓库即可免费托管。构建时自动按仓库名设置资源路径。
 
-支持淘宝与天猫域名的商品详情链接，仅保留数字 `id` 和可选 SKU；`sku_id` 统一输出为 `skuId`。无 SKU 的链接仅保留商品 ID。短链接需先打开再复制详情页地址。保留原始域名与路径，移除其他 query 和 hash。
+支持淘宝与天猫域名的商品详情链接，保留数字 `id`、可选 SKU 和链接已有的活动参数 `xxc`（用于平台加补）。`sku_id` 统一输出为 `skuId`，也支持 `sku_properties` 指定规格。短链接需先打开再复制详情页地址。保留原始域名与路径，移除其他 query 和 hash。

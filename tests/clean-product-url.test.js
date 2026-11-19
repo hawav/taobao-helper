@@ -5,6 +5,14 @@ import { cleanProductUrl } from '../src/utils/clean-product-url.js';
 test('removes tracking queries and fragment while preserving product and SKU', () => {
   assert.equal(cleanProductUrl(' https://detail.tmall.com/item.htm?abbucket=0&id=955037755613&skuId=5881221109744&spm=abc#tracking ').url, 'https://detail.tmall.com/item.htm?id=955037755613&skuId=5881221109744');
 });
+test('preserves xxc campaign values and excludes them from the removed count', () => {
+  const result = cleanProductUrl('https://detail.tmall.com/item.htm?xxc=taobaoSearch&id=456&skuId=789&spm=abc&xxc=campaign%2B1%26extra#tracking');
+  assert.equal(result.url, 'https://detail.tmall.com/item.htm?id=456&skuId=789&xxc=taobaoSearch&xxc=campaign%2B1%26extra');
+  assert.equal(result.removedCount, 1);
+});
+test('preserves xxc without a SKU', () => {
+  assert.equal(cleanProductUrl('https://item.taobao.com/item.htm?id=456&xxc=taobaoSearch').url, 'https://item.taobao.com/item.htm?id=456&xxc=taobaoSearch');
+});
 test('normalizes sku_id and supports products without SKU', () => {
   assert.equal(cleanProductUrl('https://item.taobao.com/item.htm?sku_id=123&id=456').url, 'https://item.taobao.com/item.htm?id=456&skuId=123');
   assert.equal(cleanProductUrl('https://item.taobao.com/item.htm?id=456').url, 'https://item.taobao.com/item.htm?id=456');
