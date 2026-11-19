@@ -4,7 +4,7 @@ import { cleanProductUrl } from './utils/clean-product-url.js';
 
 const inputUrl = ref('');
 const copyState = ref('');
-const exampleUrl = 'https://detail.tmall.com/item.htm?abbucket=0&id=955037755613&mi_id=00007Ubq2lN4tHG_oIP7jOMoAzrQB9A6trCqHWCN4V59gFk&ns=1&skuId=5881221109744&spm=a21xtw.29978516.product_shelf.1.49081b15H62Svv&xxc=taobaoSearch';
+const exampleUrl = 'https://detail.tmall.com/item.htm?abbucket=0&id=955037755613&mi_id=00007Ubq2lN4tHG_oIP7jOMoAzrQB9A6trCqHWCN4V59gFk&ns=1&skuId=5881221109744&spm=a21xtw.29978516.product_shelf.1.49081b15H62Svv&xxc=ad_ztc';
 const parsedResult = computed(() => {
   try { return { result: cleanProductUrl(inputUrl.value), error: '' }; }
   catch (error) { return { result: null, error: error.message }; }
@@ -33,7 +33,7 @@ async function copyResult() {
       <section class="rounded-3xl border border-stone-200/80 bg-white p-5 shadow-[0_12px_50px_-20px_rgba(70,50,20,0.15)] sm:p-8" aria-label="商品链接清理">
         <div class="mb-3 flex items-center justify-between"><label for="product-url" class="text-sm font-semibold">商品链接</label><button class="text-xs text-orange-600 hover:text-orange-800" @click="inputUrl = exampleUrl">试试示例 ↗</button></div>
         <textarea id="product-url" v-model="inputUrl" rows="4" spellcheck="false" placeholder="在这里粘贴 https://detail.tmall.com/item.htm?..." class="w-full resize-y rounded-xl border border-stone-200 bg-stone-50/70 p-4 text-sm leading-6 outline-none transition focus:border-orange-400 focus:ring-4 focus:ring-orange-100" :aria-invalid="Boolean(parsedResult.error)" aria-describedby="input-help"></textarea>
-        <div class="mt-2 flex items-center justify-between gap-3 text-xs"><p id="input-help" class="text-stone-400">支持 id、skuId / sku_id / sku_properties 和活动参数 xxc</p><button v-if="inputUrl" class="shrink-0 text-stone-500 hover:text-stone-800" @click="inputUrl = ''">清空</button></div>
+        <div class="mt-2 flex items-center justify-between gap-3 text-xs"><p id="input-help" class="text-stone-400">支持 id、skuId / sku_id / sku_properties 和 xxc=ad_ztc</p><button v-if="inputUrl" class="shrink-0 text-stone-500 hover:text-stone-800" @click="inputUrl = ''">清空</button></div>
         <p v-if="parsedResult.error" role="alert" class="mt-4 rounded-lg bg-red-50 p-3 text-sm text-red-700">{{ parsedResult.error }}</p>
         <div class="my-6 flex items-center gap-3"><div class="h-px flex-1 bg-stone-100"></div><span class="text-stone-300">↓</span><div class="h-px flex-1 bg-stone-100"></div></div>
         <div class="mb-3 flex items-center justify-between"><h2 class="text-sm font-semibold">清理后的链接</h2><span v-if="parsedResult.result" class="rounded-full bg-green-50 px-2.5 py-1 text-xs text-green-700">已移除 {{ parsedResult.result.removedCount }} 个参数</span></div>
